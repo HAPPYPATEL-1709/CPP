@@ -1,0 +1,100 @@
+#include <iostream>
+using namespace std;
+
+template <typename T>
+class Collection {
+private:
+    T* data;      
+    int size;      
+    int capacity; 
+
+public:
+    Collection(int initialCapacity = 10) : size(0), capacity(initialCapacity) {
+        data = new T[capacity];
+    }
+
+    ~Collection() {
+        delete[] data;
+    }
+    void add(T value) {
+        if (size >= capacity) {
+            capacity *= 2;
+            T* newData = new T[capacity];
+            for (int i = 0; i < size; ++i) {
+                newData[i] = data[i];
+            }
+            delete[] data;  
+            data = newData;  
+        }
+        data[size++] = value; 
+    }
+    T getMax() const {
+        if (size == 0) {
+            cout << "Collection is empty. Cannot find maximum value." << endl;
+            return T();  
+        }
+
+        T maxValue = data[0];
+        for (int i = 1; i < size; ++i) {
+            if (data[i] > maxValue) {
+                maxValue = data[i];
+            }
+        }
+        return maxValue;
+    }
+    void reverse() {
+        for (int i = 0; i < size / 2; ++i) {
+            T temp = data[i];
+            data[i] = data[size - i - 1];
+            data[size - i - 1] = temp;
+        }
+    }
+    void display() const {
+        if (size == 0) {
+            cout << "Collection is empty." << endl;
+            return;
+        }
+        for (int i = 0; i < size; ++i) {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+    int getSize() const {
+        return size;
+    }
+};
+
+int main() {
+    Collection<int> intCollection;
+    intCollection.add(5);
+    intCollection.add(10);
+    intCollection.add(3);
+    intCollection.add(8);
+    cout << "Integer Collection: ";
+    intCollection.display();
+    cout << "Maximum Value (int): " << intCollection.getMax() << endl;
+    intCollection.reverse();
+    cout << "Reversed Integer Collection: ";
+    intCollection.display();
+    Collection<float> floatCollection;
+    floatCollection.add(3.14f);
+    floatCollection.add(2.71f);
+    floatCollection.add(1.41f);
+    cout << "Float Collection: ";
+    floatCollection.display();
+    cout << "Maximum Value (float): " << floatCollection.getMax() << endl;
+    floatCollection.reverse();
+    cout << "Reversed Float Collection: ";
+    floatCollection.display();
+    Collection<char> charCollection;
+    charCollection.add('A');
+    charCollection.add('C');
+    charCollection.add('B');
+    cout << "Character Collection: ";
+    charCollection.display();
+    cout << "Maximum Value (char): " << charCollection.getMax() << endl;
+    charCollection.reverse();
+    cout << "Reversed Character Collection: ";
+    charCollection.display();
+    return 0;
+}
