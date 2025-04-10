@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+using namespace std;
+
+const int MAX_ACCOUNTS = 100;
+struct Account {
+    int accountNumber;
+    string accountHolderName;
+    double balance;
+};
+class Bank {
+private:
+    Account accounts[MAX_ACCOUNTS]; 
+    int totalAccounts; 
+
+public:
+    Bank() : totalAccounts(0) {}
+    bool createAccount(int accountNumber, const string& name, double initialBalance) {
+        if (totalAccounts >= MAX_ACCOUNTS) {
+            cout << "Account limit reached!" << endl;
+            return false;
+        }
+
+        accounts[totalAccounts].accountNumber = accountNumber;
+        accounts[totalAccounts].accountHolderName = name;
+        accounts[totalAccounts].balance = initialBalance;
+        totalAccounts++;
+        cout << "Account created successfully!" << endl;
+        return true;
+    }
+    Account* findAccount(int accountNumber) {
+        for (int i = 0; i < totalAccounts; i++) {
+            if (accounts[i].accountNumber == accountNumber) {
+                return &accounts[i];
+            }
+        }
+        return nullptr;
+    }
+    bool transferMoney(int fromAccountNumber, int toAccountNumber, double amount) {
+        Account* fromAccount = findAccount(fromAccountNumber);
+        Account* toAccount = findAccount(toAccountNumber);
+
+        if (fromAccount == nullptr || toAccount == nullptr) {
+            cout << "One or both accounts not found." << endl;
+            return false;
+        }
+
+        if (fromAccount->balance < amount) {
+            cout << "Insufficient funds in source account." << endl;
+            return false;
+        }
+
+        fromAccount->balance -= amount;
+        toAccount->balance += amount;
+
+        cout << "Transfer successful!" << endl;
+        return true;
+    }
+    void displayAccountDetails(int accountNumber) {
+        Account* account = findAccount(accountNumber);
+        if (account == nullptr) {
+            cout << "Account not found." << endl;
+            return;
+        }
+        cout << "Account Number: " << account->accountNumber << endl;
+        cout << "Account Holder: " << account->accountHolderName << endl;
+        cout << "Balance: $" << fixed << setprecision(2) << account->balance << endl;
+    }
+
+    void displayTotalAccounts() {
+        cout << "Total Accounts: " << totalAccounts << endl;
+    }
+};
+
+int main() {
+    Bank bank;
+    bank.createAccount(101, "John Doe", 5000.00);
+    bank.createAccount(102, "Jane Smith", 10000.00);
+    bank.createAccount(103, "Alice Johnson", 2500.00);
+    bank.displayAccountDetails(101);
+    bank.displayAccountDetails(102);
+    bank.transferMoney(101, 102, 1500.00);
+    bank.displayAccountDetails(101);
+    bank.displayAccountDetails(102);
+    bank.displayTotalAccounts();
+
+    return 0;
+}
