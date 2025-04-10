@@ -1,0 +1,38 @@
+#include <iostream>
+using namespace std;
+
+int recursiveSum(int arr[], int n) {
+    
+    if (n == 0) return 0;
+    return arr[n - 1] + recursiveSum(arr, n - 1);
+}
+int iterativeSum(int arr[], int size) {
+    int sum = 0;
+    for (int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+    return sum;
+}
+
+int main() {
+    int size;
+    std::cout << "Enter the size of the array: ";
+    std::cin >> size;
+
+    int* arr = new int[size];
+
+    std::cout << "Enter the elements of the array: ";
+    for (int i = 0; i < size; i++) {
+        std::cin >> arr[i];
+    }
+
+    int recursive_result = recursiveSum(arr, size);
+    int iterative_result = iterativeSum(arr, size);
+
+    std::cout << "\nRecursive Sum: " << recursive_result << std::endl;
+    std::cout << "Iterative Sum: " << iterative_result << std::endl;
+
+    delete[] arr;
+
+    return 0;
+}
