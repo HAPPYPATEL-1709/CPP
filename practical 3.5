@@ -1,0 +1,32 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int recursiveSuperDigit(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        int sum = 0;
+        while (x > 0) {
+            sum += x % 10; 
+            x /= 10;
+        }
+        return recursiveSuperDigit(sum); 
+    }
+}
+int superDigit(const string& n, int k) {
+    int initialSum = 0;
+    for (char digit : n) {
+        initialSum += digit - '0'; 
+    }
+    int totalSum = initialSum * k;
+    return recursiveSuperDigit(totalSum);
+}
+
+int main() {
+    string n = "9875";
+    int k = 4;
+    int result = superDigit(n, k);
+    cout << result << endl;
+    return 0;
+}
