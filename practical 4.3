@@ -1,0 +1,75 @@
+#include <iostream>
+#include <string>
+#define MAX_CARS 3  
+
+class Fuel {
+public:
+    std::string fuelType;
+    Fuel(const std::string& type) : fuelType(type) {}
+    void displayFuel() const {
+        std::cout << "Fuel Type: " << fuelType << std::endl;
+    }
+};
+class Brand {
+public:
+    std::string brandName;
+    Brand(const std::string& name) : brandName(name) {}
+    void displayBrand() const {
+        std::cout << "Brand: " << brandName << std::endl;
+    }
+};
+class Car : public Fuel, public Brand {
+public:
+    std::string model;
+    int year;
+    Car(const std::string& brandName, const std::string& fuelType, const std::string& carModel, int carYear)
+        : Brand(brandName), Fuel(fuelType), model(carModel), year(carYear) {}
+    void displayInfo() const {
+        std::cout << "Car Information:" << std::endl;
+        std::cout << "Model: " << model << std::endl;
+        std::cout << "Year: " << year << std::endl;
+        displayFuel();
+        displayBrand();
+    }
+};
+class CarManager {
+public:
+    Car cars[MAX_CARS];  
+    int carCount = 0;   
+    void addCar(const Car& car) {
+        if (carCount < MAX_CARS) {
+            cars[carCount++] = car;  // Add the car to the array
+        } else {
+            std::cout << "Car list is full. Cannot add more cars." << std::endl;
+        }
+    }
+    void processCars() {
+        if (carCount == 0) {
+            std::cout << "No cars to process." << std::endl;
+            return;
+        }
+
+        for (int i = 0; i < carCount; ++i) {
+            std::cout << "Processing Car #" << i + 1 << ":\n";
+            cars[i].displayInfo();
+        }
+    }
+    void displayCars() const {
+        std::cout << "All cars in the system:\n";
+        for (int i = 0; i < carCount; ++i) {
+            cars[i].displayInfo();
+        }
+    }
+};
+int main() {
+    Car car1("Toyota", "Petrol", "Corolla", 2020);
+    Car car2("Tesla", "Electric", "Model 3", 2022);
+    Car car3("Ford", "Diesel", "F-150", 2021);
+    CarManager manager;
+    manager.addCar(car1);
+    manager.addCar(car2);
+    manager.addCar(car3);
+    manager.displayCars();
+    manager.processCars();
+    return 0;
+}
