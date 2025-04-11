@@ -3,19 +3,17 @@
 using namespace std;
 
 const int MAX_CIRCLES = 100;
-
 class Shape {
 protected:
     double radius;
 public:
-    Shape(double r = 0) : radius(r) {}
+    Shape(double r = 0.0) : radius(r) {}
     void setRadius(double r) { radius = r; }
     double getRadius() const { return radius; }
 };
-
 class Circle : public Shape {
 public:
-    Circle(double r = 0) : Shape(r) {}
+    Circle(double r = 0.0) : Shape(r) {}
     double getArea() const {
         return M_PI * radius * radius;
     }
@@ -23,13 +21,13 @@ public:
         cout << "Radius: " << radius << ", Area: " << getArea() << endl;
     }
 };
-
-class CircleManager {
+class StaticCircleManager {
 private:
     Circle circles[MAX_CIRCLES];
     int count;
 public:
-    CircleManager() : count(0) {}
+    StaticCircleManager() : count(0) {}
+
     bool addCircle(double r) {
         if (count < MAX_CIRCLES) {
             circles[count++] = Circle(r);
@@ -37,20 +35,58 @@ public:
         }
         return false;
     }
+
     void displayAll() const {
+        cout << "\n[Static Collection] Circle Details:\n";
         for (int i = 0; i < count; ++i) {
             cout << "Circle " << i + 1 << ": ";
             circles[i].display();
         }
     }
 };
+class DynamicCircleManager {
+private:
+    Circle** circles;
+    int count;
+    int capacity;
 
+public:
+    DynamicCircleManager(int cap = 10) : count(0), capacity(cap) {
+        circles = new Circle*[capacity];
+    }
+
+    ~DynamicCircleManager() {
+        for (int i = 0; i < count; ++i)
+            delete circles[i];
+        delete[] circles;
+    }
+
+    bool addCircle(double r) {
+        if (count < capacity) {
+            circles[count++] = new Circle(r);
+            return true;
+        }
+        return false;
+    }
+
+    void displayAll() const {
+        cout << "\n[Dynamic Collection] Circle Details:\n";
+        for (int i = 0; i < count; ++i) {
+            cout << "Circle " << i + 1 << ": ";
+            circles[i]->display();
+        }
+    }
+};
 int main() {
-    CircleManager manager;
-    manager.addCircle(3.0);
-    manager.addCircle(4.5);
-    manager.addCircle(2.1);
-    
-    manager.displayAll();
+    StaticCircleManager staticManager;
+    staticManager.addCircle(3.5);
+    staticManager.addCircle(2.0);
+    staticManager.addCircle(4.25);
+    staticManager.displayAll();
+    DynamicCircleManager dynamicManager(5);
+    dynamicManager.addCircle(5.0);
+    dynamicManager.addCircle(1.75);
+    dynamicManager.displayAll();
     return 0;
 }
+
