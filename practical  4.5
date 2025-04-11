@@ -1,0 +1,85 @@
+#include <iostream>
+#include <string>
+#define MAX_STUDENTS 10
+
+class GradingSystem {
+protected:
+    double marks;
+public:
+    GradingSystem(double m) : marks(m) {}
+    virtual ~GradingSystem() {}
+    virtual char computeGrade() const = 0;
+    void displayStudentDetails() const {
+        std::cout << "Marks: " << marks << std::endl;
+        std::cout << "Grade: " << computeGrade() << std::endl;
+    }
+};
+class Undergraduate : public GradingSystem {
+public:
+    Undergraduate(double m) : GradingSystem(m) {}
+    char computeGrade() const override {
+        if (marks >= 90) return 'A';
+        else if (marks >= 75) return 'B';
+        else if (marks >= 60) return 'C';
+        else if (marks >= 50) return 'D';
+        else return 'F';
+    }
+};
+class Postgraduate : public GradingSystem {
+public:
+    Postgraduate(double m) : GradingSystem(m) {}
+    char computeGrade() const override {
+        if (marks >= 85) return 'A';
+        else if (marks >= 70) return 'B';
+        else if (marks >= 60) return 'C';
+        else if (marks >= 50) return 'D';
+        else return 'F';
+    }
+};
+GradingSystem* createStudent(int level, double marks) {
+    if (level == 1) {
+        return new Undergraduate(marks);  
+    } else {
+        return new Postgraduate(marks);  
+    }
+}
+
+// Function to manage and display student records
+void displayStudentRecords(GradingSystem* students[], int studentCount) {
+    std::cout << "\nStudent Records:\n";
+    for (int i = 0; i < studentCount; ++i) {
+        students[i]->displayStudentDetails();
+    }
+}
+
+int main() {
+    GradingSystem* students[MAX_STUDENTS];  
+    int studentCount = 0;  
+    char choice;
+    do {
+        int level;
+        double marks;
+        std::cout << "Enter student level (1 for Undergraduate, 2 for Postgraduate): ";
+        std::cin >> level;
+        do {
+            std::cout << "Enter marks (0-100): ";
+            std::cin >> marks;
+            if (marks < 0 || marks > 100) {
+                std::cout << "Invalid marks. Please enter marks between 0 and 100.\n";
+            }
+        } while (marks < 0 || marks > 100);
+        students[studentCount] = createStudent(level, marks);
+        studentCount++;
+        if (studentCount >= MAX_STUDENTS) {
+            std::cout << "Maximum student limit reached.\n";
+            break;
+        }
+        std::cout << "Do you want to add another student (y/n)? ";
+        std::cin >> choice;
+    } while ((choice == 'y' || choice == 'Y') && studentCount < MAX_STUDENTS);
+    displayStudentRecords(students, studentCount);
+    for (int i = 0; i < studentCount; ++i) {
+        delete students[i];
+    }
+    return 0;
+}
