@@ -1,0 +1,126 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int MAX_MANAGERS = 50; 
+class Person {
+protected:
+    string name;
+    int age;
+
+public:
+    Person(string n = "Unknown", int a = 0) : name(n), age(a) {}
+
+    void display() const {
+        cout << "Name: " << name << ", Age: " << age << endl;
+    }
+};
+class Employee : public Person {
+protected:
+    int employeeID;
+
+public:
+    Employee(string n = "Unknown", int a = 0, int id = 0) : Person(n, a), employeeID(id) {}
+
+    void display() const {
+        Person::display();
+        cout << "Employee ID: " << employeeID << endl;
+    }
+
+    int getEmployeeID() const { return employeeID; }
+};
+class Manager : public Employee {
+private:
+    string department;
+
+public:
+    Manager(string n = "Unknown", int a = 0, int id = 0, string dept = "None")
+        : Employee(n, a, id), department(dept) {}
+
+    void display() const {
+        Employee::display();
+        cout << "Department: " << department << endl;
+    }
+
+    string getDepartment() const { return department; }
+};
+class OrganizationEfficient {
+private:
+    Manager* managers[MAX_MANAGERS];
+    int count;
+
+public:
+    OrganizationEfficient() : count(0) {}
+
+    bool addManager(Manager* m) {
+        if (count < MAX_MANAGERS) {
+            managers[count++] = m;
+            return true;
+        }
+        return false;  
+    }
+    Manager* findManagerByID(int id) {
+        for (int i = 0; i < count; ++i) {
+            if (managers[i]->getEmployeeID() == id) {
+                return managers[i];
+            }
+        }
+        return nullptr;  
+    }
+
+    void displayAllManagers() const {
+        cout << "\n[Efficient Retrieval using Array] Managers:\n";
+        for (int i = 0; i < count; ++i) {
+            managers[i]->display();
+        }
+    }
+};
+class OrganizationStatic {
+private:
+    Manager* managers[MAX_MANAGERS];
+    int count;
+
+public:
+    OrganizationStatic() : count(0) {}
+
+    bool addManager(Manager* m) {
+        if (count < MAX_MANAGERS) {
+            managers[count++] = m;
+            return true;
+        }
+        return false;  
+    }
+
+    void displayAllManagers() const {
+        cout << "\n[Static Storage] Managers:\n";
+        for (int i = 0; i < count; ++i) {
+            managers[i]->display();
+        }
+    }
+};
+
+int main() {
+    Manager m1("Alice", 40, 101, "Engineering");
+    Manager m2("Bob", 45, 102, "Marketing");
+    Manager m3("Charlie", 38, 103, "Sales");
+    OrganizationEfficient orgEfficient;
+    orgEfficient.addManager(&m1);
+    orgEfficient.addManager(&m2);
+    orgEfficient.addManager(&m3);
+    orgEfficient.displayAllManagers();
+    int searchID = 102;
+    Manager* foundManager = orgEfficient.findManagerByID(searchID);
+    if (foundManager) {
+        cout << "\nManager with ID " << searchID << " found:\n";
+        foundManager->display();
+    } else {
+        cout << "\nManager with ID " << searchID << " not found.\n";
+    }
+    OrganizationStatic orgStatic;
+    orgStatic.addManager(&m1);
+    orgStatic.addManager(&m2);
+    orgStatic.addManager(&m3);
+    orgStatic.displayAllManagers();
+
+    return 0;
+}
