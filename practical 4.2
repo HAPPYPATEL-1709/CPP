@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+const int MAX_CARS = 100;
+class FuelType {
+protected:
+    string fuel;
+public:
+    FuelType(string f = "Unknown") : fuel(f) {}
+    void displayFuel() const {
+        cout << "Fuel Type: " << fuel << endl;
+    }
+};
+class Brand {
+protected:
+    string brandName;
+public:
+    Brand(string b = "Generic") : brandName(b) {}
+    void displayBrand() const {
+        cout << "Brand: " << brandName << endl;
+    }
+};
+class Car : public FuelType, public Brand {
+public:
+    Car(string b, string f) : Brand(b), FuelType(f) {}
+    void displayDetails() const {
+        displayBrand();
+        displayFuel();
+    }
+};
+class ServiceQueue {
+private:
+    Car* queue[MAX_CARS];
+    int front;
+    int rear;
+public:
+    ServiceQueue() : front(0), rear(0) {}
+
+    bool enqueue(Car* car) {
+        if (rear < MAX_CARS) {
+            queue[rear++] = car;
+            return true;
+        } else {
+            cout << "Queue is full!" << endl;
+            return false;
+        }
+    }
+
+    bool dequeue() {
+        if (front < rear) {
+            cout << "Processing Car:" << endl;
+            queue[front++]->displayDetails();
+            return true;
+        } else {
+            cout << "Queue is empty!" << endl;
+            return false;
+        }
+    }
+
+    void displayQueue() const {
+        if (front == rear) {
+            cout << "No cars in the queue." << endl;
+        } else {
+            cout << "Cars in Service Queue:" << endl;
+            for (int i = front; i < rear; ++i) {
+                queue[i]->displayDetails();
+            }
+        }
+    }
+};
+
+int main() {
+    Car car1("Toyota", "Petrol");
+    Car car2("Tesla", "Electric");
+    Car car3("Ford", "Diesel");
+    ServiceQueue service;
+    service.enqueue(&car1);
+    service.enqueue(&car2);
+    service.enqueue(&car3);
+    service.displayQueue();
+    cout << "\n--- Starting Service ---\n";
+    service.dequeue();
+    service.dequeue();
+    cout << "\n--- Remaining in Queue ---\n";
+    service.displayQueue();
+    return 0;
+}
