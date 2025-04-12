@@ -1,0 +1,97 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+class GradingSystem {
+protected:
+    string studentName;
+    double marks;
+
+public:
+    GradingSystem(const string& name = "Unknown", double m = 0.0)
+        : studentName(name), marks(m) {}
+
+    virtual ~GradingSystem() {}
+    virtual void computeGrade() const = 0;
+
+    void display() const {
+        cout << "Student Name: " << studentName << ", Marks: " << marks << " - ";
+        computeGrade();
+    }
+};
+class UndergraduateStudent : public GradingSystem {
+public:
+    UndergraduateStudent(const string& name, double m)
+        : GradingSystem(name, m) {}
+    void computeGrade() const override {
+        if (marks >= 85) {
+            cout << "Grade: A (Excellent)" << endl;
+        } else if (marks >= 70) {
+            cout << "Grade: B (Good)" << endl;
+        } else if (marks >= 50) {
+            cout << "Grade: C (Satisfactory)" << endl;
+        } else {
+            cout << "Grade: F (Fail)" << endl;
+        }
+    }
+};
+class PostgraduateStudent : public GradingSystem {
+public:
+    PostgraduateStudent(const string& name, double m)
+        : GradingSystem(name, m) {}
+
+    // Implement grade computation for postgraduate students
+    void computeGrade() const override {
+        if (marks >= 90) {
+            cout << "Grade: A (Outstanding)" << endl;
+        } else if (marks >= 75) {
+            cout << "Grade: B (Good)" << endl;
+        } else if (marks >= 60) {
+            cout << "Grade: C (Pass)" << endl;
+        } else {
+            cout << "Grade: F (Fail)" << endl;
+        }
+    }
+};
+void studentManagement() {
+    const int MAX_STUDENTS = 5;  
+
+    GradingSystem* students[MAX_STUDENTS];
+    string name;
+    double marks;
+    char studentType;
+    for (int i = 0; i < MAX_STUDENTS; ++i) {
+        cout << "Enter student type (u for undergraduate, p for postgraduate): ";
+        cin >> studentType;
+
+        cout << "Enter student name: ";
+        cin.ignore();  // to clear input buffer
+        getline(cin, name);
+
+        cout << "Enter marks: ";
+        cin >> marks;
+        if (studentType == 'u' || studentType == 'U') {
+            students[i] = new UndergraduateStudent(name, marks);
+        } else if (studentType == 'p' || studentType == 'P') {
+            students[i] = new PostgraduateStudent(name, marks);
+        } else {
+            cout << "Invalid student type. Creating undergraduate student by default.\n";
+            students[i] = new UndergraduateStudent(name, marks);
+        }
+    }
+    cout << "\n--- Student Records ---\n";
+    for (int i = 0; i < MAX_STUDENTS; ++i) {
+        students[i]->display();
+        cout << endl;
+    }
+
+    for (int i = 0; i < MAX_STUDENTS; ++i) {
+        delete students[i];
+    }
+}
+
+int main() {
+    studentManagement();  
+
+    return 0;
+}
