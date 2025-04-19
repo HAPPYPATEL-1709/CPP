@@ -30,7 +30,7 @@ public:
         EMI = calculateEMI();
     }
     double calculateEMI() {
-        double monthlyInterestRate = annualInterestRate / 12 / 100; // Monthly interest rate
+        double monthlyInterestRate = annualInterestRate / 12 / 100; 
         double emi = (loanAmount * monthlyInterestRate * pow(1 + monthlyInterestRate, loanTenureInMonths)) / 
                      (pow(1 + monthlyInterestRate, loanTenureInMonths) - 1);
         return emi;
