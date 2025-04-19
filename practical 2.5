@@ -45,17 +45,17 @@ public:
     }
     void setLoanAmount(double amount) {
         loanAmount = amount;
-        EMI = calculateEMI(); // Recalculate EMI after amount change
+        EMI = calculateEMI(); 
     }
 
     void setAnnualInterestRate(double rate) {
         annualInterestRate = rate;
-        EMI = calculateEMI(); // Recalculate EMI after rate change
+        EMI = calculateEMI();
     }
 
     void setLoanTenureInMonths(int tenure) {
         loanTenureInMonths = tenure;
-        EMI = calculateEMI(); // Recalculate EMI after tenure change
+        EMI = calculateEMI(); 
     }
 };
 
