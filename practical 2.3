@@ -102,9 +102,9 @@ public:
 
 int main() {
     BankSystem bank;
-    bank.createAccount("John Doe", "1001", 500.0);
-    bank.createAccount("Alice Smith", "1002");
-    bank.createAccount("Bob Johnson", "1003", 1000.0);
+    bank.createAccount("Happy", "1001", 500.0);
+    bank.createAccount("Anjal", "1002");
+    bank.createAccount("Swara", "1003", 1000.0);
     BankAccount* account = bank.findAccountByNumber("1001");
     if (account != nullptr) {
         account->deposit(200.0);      
