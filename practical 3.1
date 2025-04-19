@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
 class Employee {
 private:
     string name;
@@ -13,19 +14,24 @@ public:
         basicSalary = basicSal;
         bonus = empBonus;
     }
+
     inline double calculateTotalSalary() const {
         return basicSalary + bonus;
     }
+
     void displayEmployeeDetails() const {
         cout << "Employee Name: " << name << endl;
         cout << "Basic Salary: " << basicSalary << endl;
         cout << "Bonus: " << bonus << endl;
         cout << "Total Salary: " << calculateTotalSalary() << endl;
+        cout << "--------------------------" << endl;
     }
+
     void setBonus(double empBonus) {
         bonus = empBonus;
-    }
+   }
 };
+
 void displayAllEmployees(Employee employees[], int numEmployees) {
     for (int i = 0; i < numEmployees; i++) {
         employees[i].displayEmployeeDetails();
@@ -33,11 +39,16 @@ void displayAllEmployees(Employee employees[], int numEmployees) {
 }
 
 int main() {
-    const int MAX_EMPLOYEES = 3;  
-    Employee employees[MAX_EMPLOYEES];
-    employees[0] = Employee("Alice Johnson", 55000); 
-    employees[1] = Employee("Bob Smith", 60000, 7000); 
-    employees[2] = Employee("Charlie Brown", 45000); 
+    const int MAX_EMPLOYEES = 3;
+
+   
+    Employee employees[MAX_EMPLOYEES] = {
+        Employee("Alice Johnson", 55000),
+        Employee("Bob Smith", 60000, 7000),
+        Employee("Charlie Brown", 45000)
+    };
+
     displayAllEmployees(employees, MAX_EMPLOYEES);
-    return 0;
+
+    return 0;
 }
