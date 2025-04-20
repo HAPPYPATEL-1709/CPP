@@ -40,7 +40,6 @@ public:
     PostgraduateStudent(const string& name, double m)
         : GradingSystem(name, m) {}
 
-    // Implement grade computation for postgraduate students
     void computeGrade() const override {
         if (marks >= 90) {
             cout << "Grade: A (Outstanding)" << endl;
