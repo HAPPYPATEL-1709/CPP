@@ -1,0 +1,45 @@
+#include <iostream>
+#include <string>
+#include <sstream>   
+
+double getValidatedInput(const std::string& prompt) {
+    std::string input;
+    double value;
+
+    while (true) {
+        std::cout << prompt;
+        std::getline(std::cin, input);
+
+        std::stringstream ss(input);
+
+        if (ss >> value && ss.eof()) {
+            return value;
+        } else {
+            std::cout << "Invalid input. Please enter a numeric value.\n";
+        }
+    }
+}
+
+int main() {
+    try {
+        double loanAmount = getValidatedInput("Enter the loan amount you wish to apply for: ");
+        double annualIncome;
+
+        while (true) {
+            annualIncome = getValidatedInput("Enter your annual income: ");
+            if (annualIncome == 0) {
+                std::cout << "Annual income cannot be zero. Please enter a valid income.\n";
+            } else {
+                break;
+            }
+        }
+
+        double ratio = loanAmount / annualIncome;
+        std::cout << "Your loan-to-income ratio is: " << ratio << std::endl;
+
+    } catch (const std::exception& ex) {
+        std::cerr << "An unexpected error occurred: " << ex.what() << std::endl;
+    }
+
+    return 0;
+}
