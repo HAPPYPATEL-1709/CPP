@@ -1,32 +1,37 @@
-#include <iostream>
-#include <string>
+#include<iostream>
+
+#include<vector>
+
 using namespace std;
-
-int recursiveSuperDigit(int x) {
-    if (x < 10) {
-        return x;
-    } else {
-        int sum = 0;
-        while (x > 0) {
-            sum += x % 10; 
-            x /= 10;
-        }
-        return recursiveSuperDigit(sum); 
-    }
+int digit ( int , int );
+int main  ( )
+{
+    int number , k,super_digit;
+    cout << "Enter the number : ";
+    cin >> number;
+    cout << "Enter the k : ";
+    cin >> k ;
+    super_digit = digit(number , k);
+    cout <<"The super digit is : "<<super_digit<<endl;
 }
-int superDigit(const string& n, int k) {
-    int initialSum = 0;
-    for (char digit : n) {
-        initialSum += digit - '0'; 
+int digit ( int num , int k)
+{
+    x:
+    int digit, sum;
+    for ( sum = 0;num>0;num/=10)
+    {
+        digit = num%10;
+        sum +=  digit * k;
     }
-    int totalSum = initialSum * k;
-    return recursiveSuperDigit(totalSum);
-}
 
-int main() {
-    string n = "9875";
-    int k = 4;
-    int result = superDigit(n, k);
-    cout << result << endl;
-    return 0;
+    if(sum < 10 )
+    {
+        return sum ;
+    }
+    else
+    {
+        num = sum ;
+        k=1;
+        goto x;
+    }
 }
