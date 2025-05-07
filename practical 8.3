@@ -1,28 +1,31 @@
 #include <iostream>
-#include <map>
-#include <sstream>
-#include <string>
+#include <set>
+#include <iterator>
+#include <vector>
 
 using namespace std;
 
 int main() {
-    string sentence;
+    int n, id;
 
-    cout << "Enter a sentence: ";
-    getline(cin, sentence);
+    set<int> transactionIDs;
 
-    map<string, int> wordCount; 
-    stringstream ss(sentence);
-    string word;
+    cout << "Enter number of transaction IDs: ";
+    cin >> n;
 
-    while (ss >> word) {
-        wordCount[word]++; 
+    cout << "Enter transaction IDs:\n";
+    for (int i = 0; i < n; ++i) {
+        cin >> id;
+        transactionIDs.insert(id);  
     }
 
-    cout << "Word Frequency Distribution:\n";
-    for (const auto& entry : wordCount) {
-        cout << entry.first << ": " << entry.second << endl;
+    cout << "\nUnique and Sorted Transaction IDs:\n";
+    for (set<int>::iterator it = transactionIDs.begin(); it != transactionIDs.end(); ++it) {
+        cout << *it << " ";
     }
+    cout << endl;
+
+    vector<int> uniqueIDs(transactionIDs.begin(), transactionIDs.end());
 
     return 0;
 }
