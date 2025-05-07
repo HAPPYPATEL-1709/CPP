@@ -1,24 +1,36 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 
 using namespace std;
 
-int main() {
-    const int numStudents = 4;  
-    string studentNames[numStudents] = {"Happy", "Anjal", "Maitri", "Sneha"};
-    int marks[numStudents] = {85, 92, 75, 88};
-    double fees[numStudents] = {15000.75, 12000.50, 13500.00, 11000.25};  
+ostream& currency(ostream& os) {
+    return os << "₹";
+}
 
-    cout << left << setw(20) << "Student Name"
+void displayReport() {
+    string students[] = {"darshan", "happy", "dhruvin", "shreeja"};
+    double marks[] = {98.5, 93.0, 96.4, 91.2};
+    double tuitionFees[] = {50000.75, 48000.50, 53000.25, 49000.00};
+
+    cout << "\n--- Student Marks and Tuition Fees ---\n";
+
+    cout << left << setw(20) << "Name"
          << setw(10) << "Marks"
-         << setw(15) << "Tuition Fees" << endl;
-    cout << string(55, '-') << endl; 
+         << setw(15) << "Tuition Fee" << endl;
 
-    for (int i = 0; i < numStudents; ++i) {
-        cout << left << setw(20) << studentNames[i]
-             << setw(10) << marks[i]
-             << setw(15) << "₹" << fixed << setprecision(2) << fees[i] << endl; 
+    cout << setfill('-') << setw(20) << ""
+         << setw(10) << ""
+         << setw(15) << "" << setfill(' ') << endl;
+
+    for (int i = 0; i < 4; ++i) {
+        cout << left << setw(20) << students[i]  
+             << setw(10) << fixed << setprecision(1) << marks[i] 
+             << setw(2) << "$" << fixed << setprecision(2) << tuitionFees[i] << endl; 
     }
+}
 
+int main() {
+    displayReport();
     return 0;
 }
